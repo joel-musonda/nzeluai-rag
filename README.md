@@ -1,15 +1,18 @@
 
 # Nzelu AI
+
 Derived from the Bemba word - Nzelu, which means Knowledge, is a lightweight,  Retrieval-Augmented Generation (RAG) assistant designed to live  within a user's local documentation space. Acting as an empathetic and highly precise companion, it extracts domain-specific context from uploaded knowledge bases to deliver contextually grounded, low-latency answers without hallucination.
 
 ![Nzelu AI Chatbot Interface](screenshots/interface.png)
 
 
 ## System Architecture & Engineering Blueprint
+ 
+Nzelu AI splits the traditional LLM bottleneck into two independent asynchronous pipelines: an Ingestion Pipeline and a Runtime Execution Pipeline.
 
 ![Nzelu AI Chatbot Interface](screenshots/rag.png)
 
-Nzelu AI splits the traditional LLM bottleneck into two independent asynchronous pipelines: an Ingestion Pipeline and a Runtime Execution Pipeline.
+
 
 1. **The Ingestion & Vector Dense Space Pipeline
 Document Processing**: Documents are parsed and subjected to a structured RecursiveCharacterTextSplitter. Chunk sizes are set to 1000 tokens with a 200 token overlap to protect semantic context boundaries across text splits.
@@ -41,7 +44,6 @@ Leverages the latest native interpreter optimizations, enhanced garbage collecti
 **LangChain :** Provides a unified, modular abstraction layer using predictable object schemas, ensuring seamless swaps between underlying models and database clients.
 
 **Pinecone Vector database:** Offloads mathematical multi-dimensional indexing to a fully managed cloud service, maintaining sub-millisecond retrieval speeds without consuming local laptop memory resources.
-## Screenshots
 
 ![Nzelu AI Chatbot plan ](screenshots/.plan.svg)
 
