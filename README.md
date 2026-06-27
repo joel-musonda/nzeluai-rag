@@ -45,7 +45,7 @@ Leverages the latest native interpreter optimizations, enhanced garbage collecti
 
 **Pinecone Vector database:** Offloads mathematical multi-dimensional indexing to a fully managed cloud service, maintaining sub-millisecond retrieval speeds without consuming local laptop memory resources.
 
-![Nzelu AI Chatbot plan ](screenshots/.plan.svg)
+![Nzelu AI Chatbot plan ](screenshots/plan.png)
 
 ## Run Locally
 
