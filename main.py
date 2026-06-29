@@ -30,7 +30,7 @@ if "explorer_collapsed" not in st.session_state:
 if "landing_seed" not in st.session_state:
     st.session_state.landing_seed = random.randint(0, 5)
 
-# ---THE ELITE IDE APPARATUS (UNIFIES CANVAS & FIXES SPACING GAPS) ---
+# ---Styling to make the workspace look like Cursor AI ---
 st.markdown("""
     <style>
         /* Unify global viewport backgrounds to eradicate split canvas bugs */
@@ -115,7 +115,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- INITIALIZE CORE VECTOR DATA PIPELINES ---
+# --- INITIALIZING VECTOR DATABASE PIPELINES ---
 pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
 index_name = os.environ.get("PINECONE_INDEX_NAME")
 index = pc.Index(index_name)
@@ -138,7 +138,7 @@ else:
     else:
         col_explorer, col_main = st.columns([0.18, 0.82])
 
-# --- PANEL 1: EXPLORER COMPARTMENT ---
+# --- STUDENT DASHBOARD  AND FILE EXPLORER---
 with col_explorer:
     if st.session_state.explorer_collapsed:
         st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
@@ -155,6 +155,8 @@ with col_explorer:
                 st.session_state.explorer_collapsed = True
                 st.rerun()
                 
+        st.write("---")
+        st.subheader("YOUR LIBRARY")
         # Drag and Drop Upload Port
         uploaded_file = st.file_uploader("Upload Profile Context", type=["pdf"], label_visibility="collapsed")
         if uploaded_file is not None:
@@ -176,7 +178,7 @@ with col_explorer:
 
         # Action: Return to Dashboard view
         if st.session_state.active_doc:
-            if st.button("X", use_container_width=True):
+            if st.button("Nzelu AI", use_container_width=True):
                 st.session_state.active_doc = None
                 st.rerun()
 
@@ -193,7 +195,10 @@ with col_explorer:
                         st.session_state.active_doc = doc_name
                         st.rerun()
             else:
-                st.markdown("<p style='color:#475569; font-size:12px; font-style:italic; padding-left:4px;'>No files initialized.</p>", unsafe_allow_html=True)
+                st.info("No file has been uploaded")
+                
+                #This is a smaller st.markdown
+               #---("<p style='color:#475569; font-size:12px; font-style:italic; padding-left:4px;'>No file has been uploaded.</p>", unsafe_allow_html=True)
 
 # --- WORKSPACE ROUTING PARSER ---
 if st.session_state.active_doc:
@@ -201,7 +206,7 @@ if st.session_state.active_doc:
     
     # --- PANEL 2: ACTIVE DOCUMENT VIEWER ---
     with col_workspace:
-        st.markdown(f"<p style='color:#64748b; font-size:11px; font-weight:600; letter-spacing:0.5px; margin-bottom:16px; margin-top:4px;'>WORKING CORE // {active_doc.upper()}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p style='color:#64748b; font-size:11px; font-weight:600; letter-spacing:0.5px; margin-bottom:16px; margin-top:4px;'>VIEWING : {active_doc.upper()}</p>", unsafe_allow_html=True)
         pdf_bytes = st.session_state.library[active_doc]
         
         workspace_scroll_box = st.container(height=840)
@@ -210,11 +215,11 @@ if st.session_state.active_doc:
 
     # --- PANEL 3: DYNAMIC LLM SIDE CHAT BAR ---
     with col_ai_sidebar:
-        st.markdown("<p style='color:#f8fafc; font-size:13px; font-weight:700; letter-spacing:0.5px; margin-bottom:20px; margin-top:2px;'>NZELU AI // CHAT CONSOLE</p>", unsafe_allow_html=True)
+        st.markdown("<p style='color:#f8fafc; font-size:13px; font-weight:700; letter-spacing:0.5px; margin-bottom:20px; margin-top:2px;'>NZELU AI </p>", unsafe_allow_html=True)
         
         if active_doc not in st.session_state.chat_histories:
             st.session_state.chat_histories[active_doc] = [
-                SystemMessage(content="You are Nzelu AI. Rely heavily on text fragments explicitly pulled from context to formulate logical answers.")
+                SystemMessage(content="You are Nzelu AI. Use the provided context to answer the user's questions perfectly.")
             ]
         current_history = st.session_state.chat_histories[active_doc]
         
@@ -228,7 +233,7 @@ if st.session_state.active_doc:
                     with st.chat_message("assistant"):
                         st.markdown(message.content)
             
-            # FIXED: Real-time chunk token streaming engine eliminates lag entirely
+            # FIXED: Real-time chunk token streaming engine 
             if st.session_state.awaiting_response:
                 user_prompt = current_history[-1].content
                 docs_text = ""
@@ -242,7 +247,15 @@ if st.session_state.active_doc:
                 except Exception:
                     docs_text = ""
                     
-                system_prompt = f"""Rely strictly on this documentation to formulate an answer:\n{docs_text}"""
+                system_prompt = f"""You are Nzelu AI, an assistant that helps students and scholars better understand concepts by answering questions they may have while they study and providing augmented or better explainations than the material may have.
+            you were developed by a group of Cambridge A-level students at Crucible Lusaka as a way of putting a highly intelligent private tutor in every student's pocket.
+Use the following pieces of retrieved context from '{active_doc}' to answer the question or better explain the concept by using analogies and real world scenarios that users may relate to. 
+If you don't know the answer based on the context, state clearly that the document doesn't explicitly mention it but state what you think it might be.
+Keep answers precise and clean. Make sure to add questions, ideas, projects, case studies or real world scenarios that provoke the student to ask more questions, want to learn more, think about it or study the topic further. create real world scenarios that better explains the concept in the context provided. 
+
+Context:
+{docs_text}"""
+
                 
                 # Using high-velocity, supported model
                 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.3, google_api_key=os.environ.get("GOOGLE_API_KEY"))
@@ -271,12 +284,13 @@ if st.session_state.active_doc:
 else:
     # --- PLATFORM LANDING SPACE ---
     creative_welcomes = [
-        "What's on the agenda today?",
-        "What shall we decode today?",
-        "Design without friction. What are we building?",
-        "Context engine ready. Infuse your document schema.",
-        "Knowledge synthesis active. Feed the blueprint.",
-        "Non-conformity accelerates discovery. Introduce context."
+        "I have no special talents. I am only passionately curious. — Albert Einstein",
+        "Curiosity is the engine of achievement. — Ken Robinson",
+        "Learning never exhausts the mind. — Leonardo da Vinci",
+        "The roots of education are bitter, but the fruit is sweet. — Aristotle",
+        "“Education is the most powerful weapon which you can use to change the world. — Nelson Mandela",
+        "The only true wisdom is in knowing you know nothing. — Socrates",
+        "To know what you know and what you do not know, that is true knowledge — Confucius",
     ]
     selected_welcome = creative_welcomes[st.session_state.landing_seed]
     
@@ -285,14 +299,16 @@ else:
 <h2 style="color: #ffffff; font-size: 32px; font-weight: 600; margin-bottom: 2.5rem; letter-spacing: -0.5px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">{selected_welcome}</h2>
 <div style="width: 100%; max-width: 680px; position: relative; margin-bottom: 1.5rem;">
 <div style="background-color: #1e2330; border: 1px solid #2d3444; border-radius: 28px; padding: 14px 24px; display: flex; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-<span style="color: #64748b; font-size: 16px; margin-right: 12px; font-family: sans-serif;">✨</span>
-<input type="text" placeholder="Upload a document from the explorer to activate analysis workspace..." disabled style="background: transparent; border: none; width: 100%; color: #94a3b8; font-size: 15px; outline: none; cursor: not-allowed;" />
+<input type="text" placeholder="Upload your documents to activate Nzelu AI workspace..." disabled style="background: transparent; border: none; width: 100%; color: #94a3b8; font-size: 15px; outline: none; cursor: not-allowed;" />
 <span style="background-color: #2d3444; color: #64748b; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; cursor: not-allowed;">↑</span>
 </div>
 </div>
 <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; max-width: 680px;">
-<div style="border: 1px solid #1e2330; color: #94a3b8; border-radius: 16px; padding: 8px 16px; font-size: 13px; font-weight: 500; background-color: #0d0f13; cursor: pointer;">🔍 Search deep data</div>
-<div style="border: 1px solid #1e2330; color: #94a3b8; border-radius: 16px; padding: 8px 16px; font-size: 13px; font-weight: 500; background-color: #0d0f13; cursor: pointer;">📝 Write or edit briefs</div>
-<div style="border: 1px solid #1e2330; color: #94a3b8; border-radius: 16px; padding: 8px 16px; font-size: 13px; font-weight: 500; background-color: #0d0f13; cursor: pointer;">💡 Analyze structures</div>
+<div style="border: 1px solid #1e2330; color: #94a3b8; border-radius: 16px; padding: 8px 16px; font-size: 13px; font-weight: 500; background-color: #0d0f13; cursor: pointer;">🔍 Understand Better</div>
+<div style="border: 1px solid #1e2330; color: #94a3b8; border-radius: 16px; padding: 8px 16px; font-size: 13px; font-weight: 500; background-color: #0d0f13; cursor: pointer;">📝 Create Analogies</div>
+<div style="border: 1px solid #1e2330; color: #94a3b8; border-radius: 16px; padding: 8px 16px; font-size: 13px; font-weight: 500; background-color: #0d0f13; cursor: pointer;">💡 Apply to real world</div>
 </div>
 </div>""", unsafe_allow_html=True)
+
+        st.markdown("<center><p style='color:#475569; font-size:12px; font-style:bold; '>While it is very unlikely, Nzelu AI can make mistakes. critical documents should be checked .</p></center>", unsafe_allow_html=True)        
+        
