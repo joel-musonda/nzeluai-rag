@@ -155,9 +155,10 @@ with col_explorer:
                 st.session_state.explorer_collapsed = True
                 st.rerun()
                 
+        
+        # Drag and Drop Upload Port
         st.write("---")
         st.subheader("YOUR LIBRARY")
-        # Drag and Drop Upload Port
         uploaded_file = st.file_uploader("Upload Profile Context", type=["pdf"], label_visibility="collapsed")
         if uploaded_file is not None:
             if uploaded_file.name not in st.session_state.library:
@@ -310,5 +311,5 @@ else:
 </div>
 </div>""", unsafe_allow_html=True)
 
-        st.markdown("<center><p style='color:#475569; font-size:12px; font-style:bold; '>While it is very unlikely, Nzelu AI can make mistakes. critical documents should be checked .</p></center>", unsafe_allow_html=True)        
+        st.markdown("<center><p style='color:#475569; font-size:12px;  '>While it is very unlikely, Nzelu AI can make mistakes. critical documents should be checked .</p></center>", unsafe_allow_html=True)        
         

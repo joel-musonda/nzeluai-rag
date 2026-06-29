@@ -8,7 +8,7 @@ from pinecone import Pinecone, ServerlessSpec
 
 # import langchain
 from langchain_pinecone import PineconeVectorStore
-from langchain_google_genai import GoogleGenAIEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.documents import Document
 
 # Load environment variables from .env file
@@ -38,7 +38,7 @@ if index_name not in existing_indexes:
 index = pc.Index(index_name)
 
 # Initialize free Google Gemini embeddings model
-embeddings = GoogleGenAIEmbeddings(model="text-embedding-004")
+embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-2-preview")
 
 # Connect LangChain's vector store wrapper to Pinecone with Gemini embeddings
 vector_store = PineconeVectorStore(index=index, embedding=embeddings)

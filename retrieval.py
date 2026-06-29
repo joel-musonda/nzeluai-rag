@@ -7,7 +7,7 @@ from pinecone import Pinecone, ServerlessSpec
 
 # import langchain
 from langchain_pinecone import PineconeVectorStore
-from langchain_google_genai import GoogleGenAIEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.documents import Document
 
 load_dotenv()
@@ -22,7 +22,7 @@ index = pc.Index(index_name)
 
 # initialize embeddings model + vector store
 
-embeddings = GoogleGenAIEmbeddings(model="text-embedding-004", google_api_key=os.environ.get("GOOGLE_API_KEY"))
+embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-2-preview", google_api_key=os.environ.get("GOOGLE_API_KEY"))
 vector_store = PineconeVectorStore(index=index, embedding=embeddings)
 
 # retrieval
