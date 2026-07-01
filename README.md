@@ -43,8 +43,7 @@ Dynamic Context Injection: The system programmatically serializes the raw page c
 | Frontend | Streamlit| Eliminates heavy frontend state management overhead, allowing rapid prototyping of stateful reactive components using native session threading. |
 | Ochestrator | Langchain | Provides a unified, modular abstraction layer using predictable object schemas, ensuring seamless swaps between underlying models and database clients.|
 |Vector Database| Pinecone | Offloads mathematical multi-dimensional indexing to a fully managed cloud service, maintaining sub-millisecond retrieval speeds without consuming local laptop memory resources. |
-
-|Programming Language| Python 3.13|Leverages the latest native interpreter optimizations, enhanced garbage collection, and faster package execution.|
+| Programming Language| Python 3.13| Leverages the latest native interpreter optimizations, enhanced garbage collection, and faster package execution.|
 
 
 
